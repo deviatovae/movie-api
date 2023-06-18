@@ -9,7 +9,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { MovieService } from './movie.service';
-import { AddMovieDto } from './add-movie.dto';
+import { AddMovieDto, UpdateMovieDto } from './dto';
 
 @Controller('movies')
 export class MoviesController {
@@ -42,7 +42,7 @@ export class MoviesController {
   }
 
   @Put(':id')
-  async updateMovie(@Param('id') id: string, @Body() dto: AddMovieDto) {
+  async updateMovie(@Param('id') id: string, @Body() dto: UpdateMovieDto) {
     const movie = await this.movieService.updateMovie(id, dto);
     if (!movie) {
       throw new NotFoundException();

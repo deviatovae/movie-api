@@ -1,7 +1,6 @@
 import { Movie } from './movie.entity';
 import { Injectable } from '@nestjs/common';
-import { AddMovieDto } from './add-movie.dto';
-import { UpdateMovieDto } from './update-movie.dto';
+import { AddMovieDto, UpdateMovieDto } from './dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MongoRepository } from 'typeorm';
 import { ObjectId } from 'mongodb';
