@@ -5,23 +5,24 @@ import {
   Get,
   NotFoundException,
   Param,
-  Post, Put,
+  Post,
+  Put,
 } from '@nestjs/common';
-import { MovieRepository } from './movie.repository';
+import { MovieService } from './movie.service';
 import { AddMovieDto } from './add-movie.dto';
 
 @Controller('movies')
 export class MoviesController {
-  constructor(private readonly movieRepository: MovieRepository) {}
+  constructor(private readonly movieService: MovieService) {}
 
   @Get()
   getMovies() {
-    return this.movieRepository.getMovies();
+    return this.movieService.getMovies();
   }
 
   @Get(':id')
-  getMovie(@Param('id') id: string) {
-    const movie = this.movieRepository.getMovie(id);
+  async getMovie(@Param('id') id: string) {
+    const movie = await this.movieService.getMovie(id);
     if (!movie) {
       throw new NotFoundException();
     }
@@ -29,23 +30,23 @@ export class MoviesController {
   }
 
   @Delete(':id')
-  deleteMovie(@Param('id') id: string) {
-    if (!this.movieRepository.deleteMovie(id)) {
+  async deleteMovie(@Param('id') id: string) {
+    if (!(await this.movieService.deleteMovie(id))) {
       throw new NotFoundException();
     }
   }
 
   @Post()
   addMovie(@Body() dto: AddMovieDto) {
-    return this.movieRepository.addMovie(dto);
+    return this.movieService.addMovie(dto);
   }
 
   @Put(':id')
-  updateMovie(@Param('id') id: string, @Body() dto: AddMovieDto) {
-    const movie = this.movieRepository.updateMovie(id, dto);
+  async updateMovie(@Param('id') id: string, @Body() dto: AddMovieDto) {
+    const movie = await this.movieService.updateMovie(id, dto);
     if (!movie) {
       throw new NotFoundException();
     }
-    return movie
+    return movie;
   }
 }

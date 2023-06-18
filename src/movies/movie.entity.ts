@@ -1,10 +1,17 @@
+import { Column, Entity, ObjectId, ObjectIdColumn } from 'typeorm';
+
+@Entity()
 export class Movie {
-  id: string;
+  @ObjectIdColumn()
+  id: ObjectId;
+
+  @Column()
   name: string;
+
+  @Column()
   description: string;
 
-  constructor(id: string, name: string, description: string) {
-    this.id = id;
+  constructor(name: string, description: string) {
     this.name = name;
     this.description = description;
   }
