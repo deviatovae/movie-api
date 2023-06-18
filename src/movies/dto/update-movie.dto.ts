@@ -1,12 +1,13 @@
-import { IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class UpdateMovieDto {
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
-  @MinLength(2)
   readonly name: string;
 
+  @IsOptional()
   @IsString()
-  @MinLength(1)
+  @IsNotEmpty()
   readonly description: string | null;
 }

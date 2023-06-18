@@ -10,6 +10,8 @@ import {
 } from '@nestjs/common';
 import { MovieService } from './movie.service';
 import { AddMovieDto, UpdateMovieDto } from './dto';
+import { RateMovieDto } from './dto/rate-movie.dto';
+import { MovieDto } from './dto/movie.dto';
 
 @Controller('movies')
 export class MoviesController {
@@ -17,7 +19,9 @@ export class MoviesController {
 
   @Get()
   getMovies() {
-    return this.movieService.getMovies();
+    return this.movieService
+      .getMovies()
+      .then((movies) => movies.map((movie) => MovieDto.createFromMovie(movie)));
   }
 
   @Get(':id')
@@ -26,7 +30,7 @@ export class MoviesController {
     if (!movie) {
       throw new NotFoundException();
     }
-    return movie;
+    return MovieDto.createFromMovie(movie);
   }
 
   @Delete(':id')
@@ -38,7 +42,9 @@ export class MoviesController {
 
   @Post()
   addMovie(@Body() dto: AddMovieDto) {
-    return this.movieService.addMovie(dto);
+    return this.movieService
+      .addMovie(dto)
+      .then((movie) => MovieDto.createFromMovie(movie));
   }
 
   @Put(':id')
@@ -47,6 +53,15 @@ export class MoviesController {
     if (!movie) {
       throw new NotFoundException();
     }
-    return movie;
+    return MovieDto.createFromMovie(movie);
+  }
+
+  @Post(':id/rate')
+  async rateMovie(@Param('id') id: string, @Body() dto: RateMovieDto) {
+    const movie = await this.movieService.rateMovie(id, dto);
+    if (!movie) {
+      throw new NotFoundException();
+    }
+    return MovieDto.createFromMovie(movie);
   }
 }

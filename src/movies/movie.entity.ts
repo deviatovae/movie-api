@@ -11,6 +11,12 @@ export class Movie {
   @Column()
   description: string;
 
+  @Column({ type: 'double' })
+  rating = 0;
+
+  @Column()
+  ratingCount = 0;
+
   constructor(name: string, description: string) {
     this.name = name;
     this.description = description;
