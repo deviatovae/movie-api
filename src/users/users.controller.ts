@@ -4,11 +4,13 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UserDto } from './dto/user.dto';
 import { isInstance } from 'class-validator';
 import { ValidationError } from '../infrastructure/validationError';
+import { IsPublic } from '../auth/is-public.decorator';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly userService: UserService) {}
 
+  @IsPublic()
   @Post()
   createUser(@Body() dto: CreateUserDto): Promise<UserDto> {
     return this.userService

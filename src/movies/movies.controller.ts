@@ -12,11 +12,13 @@ import { MovieService } from './movie.service';
 import { AddMovieDto, UpdateMovieDto } from './dto';
 import { RateMovieDto } from './dto/rate-movie.dto';
 import { MovieDto } from './dto/movie.dto';
+import { IsPublic } from '../auth/is-public.decorator';
 
 @Controller('movies')
 export class MoviesController {
   constructor(private readonly movieService: MovieService) {}
 
+  @IsPublic()
   @Get()
   getMovies() {
     return this.movieService
@@ -24,6 +26,7 @@ export class MoviesController {
       .then((movies) => movies.map((movie) => MovieDto.createFromMovie(movie)));
   }
 
+  @IsPublic()
   @Get(':id')
   async getMovie(@Param('id') id: string) {
     const movie = await this.movieService.getMovie(id);

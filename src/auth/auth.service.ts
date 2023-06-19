@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../users/user.service';
 import { Password } from './password.service';
 import { AuthDto } from './auth.dto';
+import { TokenPayload } from './token-payload';
 
 @Injectable()
 export class AuthService {
@@ -23,6 +24,7 @@ export class AuthService {
     if (userPass !== hashedPass) {
       return null;
     }
-    return this.jwtService.signAsync({ userId });
+    const payload: TokenPayload = { userId: userId.toString() };
+    return this.jwtService.signAsync(payload);
   }
 }
