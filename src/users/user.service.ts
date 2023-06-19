@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Movie } from '../movies/movie.entity';
 import { MongoRepository } from 'typeorm';
 import { User } from './user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
-import { Password } from '../infrastructure/password.service';
+import { Password } from '../auth/password.service';
 import { ValidationError } from '../infrastructure/validationError';
 
 @Injectable()
@@ -27,7 +26,8 @@ export class UserService {
       throw new ValidationError('Email already in use');
     }
 
-    const [hashedPassword, salt] = await this.password.hashPassword(password);
+    const salt = await this.password.genSalt();
+    const hashedPassword = await this.password.hashPassword(password, salt);
     const user = new User(email, name, hashedPassword, salt);
     return this.repository.save(user);
   }
