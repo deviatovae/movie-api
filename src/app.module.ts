@@ -7,14 +7,18 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Movie } from './movies/movie.entity';
 import typeormConfig from './typeorm.config';
 import { ConfigModule } from '@nestjs/config';
+import { User } from './users/user.entity';
+import { UserService } from './users/user.service';
+import { UsersController } from './users/users.controller';
+import { Password } from './infrastructure/password.service';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forRootAsync(typeormConfig),
-    TypeOrmModule.forFeature([Movie]),
+    TypeOrmModule.forFeature([Movie, User]),
   ],
-  controllers: [AppController, MoviesController],
-  providers: [AppService, MovieService],
+  controllers: [AppController, MoviesController, UsersController],
+  providers: [AppService, MovieService, UserService, Password],
 })
 export class AppModule {}
