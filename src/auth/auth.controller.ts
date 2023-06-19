@@ -1,7 +1,8 @@
 import { Body, Controller, Post, UnauthorizedException } from '@nestjs/common';
-import { AuthDto } from './auth.dto';
-import { AuthService } from './auth.service';
-import { IsPublic } from './is-public.decorator';
+import { AuthDto } from './dto/auth.dto';
+import { AuthService } from './service/auth.service';
+import { IsPublic } from './decorator/is-public.decorator';
+import { TokenDto } from './dto/token.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -14,6 +15,7 @@ export class AuthController {
     if (!token) {
       throw new UnauthorizedException();
     }
-    return { token };
+
+    return new TokenDto(token);
   }
 }

@@ -1,7 +1,7 @@
 import * as bcrypt from 'bcrypt';
 import { Injectable } from '@nestjs/common';
 @Injectable()
-export class Password {
+export class HashPasswordService {
   genSalt(): Promise<string> {
     return bcrypt.genSalt();
   }

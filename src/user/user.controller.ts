@@ -1,13 +1,18 @@
-import { Body, Controller, Post, UnprocessableEntityException } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserDto } from './dto/user.dto';
 import { isInstance } from 'class-validator';
-import { ValidationError } from '../infrastructure/validationError';
-import { IsPublic } from '../auth/is-public.decorator';
+import { ValidationError } from '../validation/validation-error';
+import { IsPublic } from '../auth/decorator/is-public.decorator';
 
 @Controller('users')
-export class UsersController {
+export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @IsPublic()

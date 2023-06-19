@@ -3,15 +3,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { MongoRepository } from 'typeorm';
 import { User } from './user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
-import { Password } from '../auth/password.service';
-import { ValidationError } from '../infrastructure/validationError';
+import { ValidationError } from '../validation/validation-error';
+import { HashPasswordService } from '../security/hash-password.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly repository: MongoRepository<User>,
-    private readonly password: Password,
+    private readonly password: HashPasswordService,
   ) {}
 
   getUserByEmail(email: string): Promise<User | null> {

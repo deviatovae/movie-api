@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserService } from '../users/user.service';
-import { Password } from './password.service';
-import { AuthDto } from './auth.dto';
-import { TokenPayload } from './token-payload';
+import { UserService } from '../../user/user.service';
+import { AuthDto } from '../dto/auth.dto';
+import { TokenPayload } from '../types/token-payload';
+import { HashPasswordService } from '../../security/hash-password.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UserService,
     private jwtService: JwtService,
-    private password: Password,
+    private password: HashPasswordService,
   ) {}
 
   async auth({ email, password }: AuthDto): Promise<string | null> {

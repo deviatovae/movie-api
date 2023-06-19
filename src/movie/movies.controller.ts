@@ -12,7 +12,7 @@ import { MovieService } from './movie.service';
 import { AddMovieDto, UpdateMovieDto } from './dto';
 import { RateMovieDto } from './dto/rate-movie.dto';
 import { MovieDto } from './dto/movie.dto';
-import { IsPublic } from '../auth/is-public.decorator';
+import { IsPublic } from '../auth/decorator/is-public.decorator';
 
 @Controller('movies')
 export class MoviesController {
