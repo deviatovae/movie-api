@@ -1,0 +1,39 @@
+version: '3.3'
+services:
+  backend:
+    container_name: backend
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    command: npm run start:dev
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
+      - "3001:9229"
+    networks:
+      - net
+    depends_on:
+      - mongodb
+    volumes:
+      - .:/backend
+      - /backend/node_modules
+    restart: unless-stopped
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    volumes:
+      - mongodb:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - net
+    restart: always
+
+networks:
+  net:
+    driver: bridge
+
+volumes:
+  mongodb:
