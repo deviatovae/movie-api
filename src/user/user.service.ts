@@ -5,6 +5,7 @@ import { User } from './user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ValidationError } from '../validation/validation-error';
 import { HashPasswordService } from '../security/hash-password.service';
+import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class UserService {
@@ -30,5 +31,9 @@ export class UserService {
     const hashedPassword = await this.password.hashPassword(password, salt);
     const user = new User(email, name, hashedPassword, salt);
     return this.repository.save(user);
+  }
+
+  getUserById(id: string): Promise<User | null> {
+    return this.repository.findOneBy({ _id: new ObjectId(id) });
   }
 }

@@ -14,12 +14,12 @@ export class AuthService {
   ) {}
 
   async auth({ email, password }: AuthDto): Promise<string | null> {
-    const {
-      id: userId,
-      password: userPass,
-      salt,
-    } = await this.usersService.getUserByEmail(email);
+    const user = await this.usersService.getUserByEmail(email);
+    if (!user) {
+      return null;
+    }
 
+    const { id: userId, password: userPass, salt } = user;
     const hashedPass = await this.password.hashPassword(password, salt);
     if (userPass !== hashedPass) {
       return null;
