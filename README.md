@@ -7,7 +7,6 @@
 ## Usage
 - **User**
     - [Auth](#auth)
-- **User**
     - [Create](#create-user)
 
 - **Movies**
