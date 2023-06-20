@@ -7,11 +7,10 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { MovieService } from './movie.service';
-import { AddMovieDto, UpdateMovieDto } from './dto';
-import { RateMovieDto } from './dto/rate-movie.dto';
-import { MovieDto } from './dto/movie.dto';
+import { AddMovieDto, UpdateMovieDto, RateMovieDto, MovieDto } from './dto';
 import { IsPublic } from '../auth/decorator/is-public.decorator';
 
 @Controller('movies')
@@ -20,9 +19,9 @@ export class MoviesController {
 
   @IsPublic()
   @Get()
-  getMovies() {
+  getMovies(@Query('sort') sort: string | null) {
     return this.movieService
-      .getMovies()
+      .getMovies(sort)
       .then((movies) => movies.map((movie) => MovieDto.createFromMovie(movie)));
   }
 

@@ -1,10 +1,9 @@
 import { Movie } from './movie.entity';
 import { Injectable } from '@nestjs/common';
-import { AddMovieDto, UpdateMovieDto } from './dto';
+import { AddMovieDto, UpdateMovieDto, RateMovieDto } from './dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MongoRepository } from 'typeorm';
 import { ObjectId } from 'mongodb';
-import { RateMovieDto } from './dto/rate-movie.dto';
 
 @Injectable()
 export class MovieService {
@@ -13,7 +12,11 @@ export class MovieService {
     private readonly repository: MongoRepository<Movie>,
   ) {}
 
-  getMovies(): Promise<Movie[]> {
+  getMovies(sort: string | null): Promise<Movie[]> {
+    if (!sort) {
+      return this.repository.find();
+    }
+
     return this.repository
       .aggregate([
         {
@@ -27,7 +30,7 @@ export class MovieService {
             },
           },
         },
-        { $sort: { ratingValue: -1 } },
+        { $sort: { ratingValue: sort === 'asc' ? 1 : -1 } },
       ])
       .toArray()
       .then((values) =>
